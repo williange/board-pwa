@@ -1,6 +1,29 @@
 .boardItem {
-    width: 300px;
+    width: 100%;
     padding: 10px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: 15px auto;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    &:first-child {
+        margin-top: 0;
+    }
+    .title {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .descriptionContainer {
+        transition: 0.5s;
+        max-height: 0;
+        overflow: hidden;
+        &.active{
+            max-height: 1000px;
+        }
+        .description {
+            font-size: 14px;
+        }
+    }
 }

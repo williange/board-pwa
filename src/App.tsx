@@ -1,21 +1,13 @@
-import "./assets/reset.css";
-import { BoardItem } from "./components/Board/Item";
 import Items from "./data/Items.json";
+import "./assets/reset.css";
 import "./assets/index.scss";
+import { Column } from "./components/Board/Column";
 
 function App() {
-	console.log(Items);
 	return (
-		<>
-			{Items.map((item) => (
-				<BoardItem
-					description={item.description}
-					id={item.id}
-					title={item.title}
-					key={`item-${item.id}`}
-				/>
-			))}
-		</>
+		<div>
+			<Column items={Items} title={"Backlog"} />
+		</div>
 	);
 }
 
