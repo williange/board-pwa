@@ -19,5 +19,8 @@
 		background-color: $grey;
 		padding: 7px;
 		border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
 	}
 }
