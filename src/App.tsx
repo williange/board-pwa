@@ -1,25 +1,38 @@
 import "./assets/index.css";
 import { Column } from "./components/Board/Column";
 import { useEffect, useState } from "react";
-import { IItem } from "./interfaces/Board";
-import { getItems } from "./data/item";
+import { IColumnResponse } from "./interfaces/Board";
+import { getColumns, setColumn } from "./data/column";
+import { CreateColumn } from "./components/Board/CreateColumn";
 
 function App() {
-	const [items, setItems] = useState<IItem[]>([]);
+	const [columns, setColumns] = useState<IColumnResponse[]>([]);
 
 	async function loadItems() {
-		getItems().then((items) => {
-			setItems(items || []);
+		getColumns().then((columns) => {
+			setColumns(columns);
+		});
+	}
+
+	function handleCreateColumn(title: string) {
+		setColumn({
+			title: title,
+			position: 0,
+			itemsId: [],
 		});
 	}
 
 	useEffect(() => {
-		loadItems()
+		loadItems();
 	}, []);
 
 	return (
 		<div>
-			<Column items={items} title={"Backlog"} />
+			{columns.map((column) => (
+				<Column id={column.id || ""} title={column.title} />
+			))}
+
+			<CreateColumn handleCreateColumn={handleCreateColumn} />
 		</div>
 	);
 }

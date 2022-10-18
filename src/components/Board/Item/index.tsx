@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { IItem } from "../../../interfaces/Board";
+import { IItem, IItemResponse } from "../../../interfaces/Board";
 import { Button } from "../../Shared/Button";
 import styles from "./styles.module.scss";
 
-export function Item({ id, description, title }: IItem) {
+export function Item({ id, description, title }: IItemResponse) {
 	const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
 	return (
 		<div className={styles.boardItem} data-testid={id}>
@@ -20,7 +20,7 @@ export function Item({ id, description, title }: IItem) {
 				onClick={() => {
 					setIsDescriptionOpen(!isDescriptionOpen);
 				}}
-                title={isDescriptionOpen ? "See Less" : "See More"}
+				title={isDescriptionOpen ? "See Less" : "See More"}
 			/>
 		</div>
 	);

@@ -6,21 +6,40 @@ import {
 	doc,
 	deleteDoc,
 	getDoc,
+	query,
+	where,
 } from "firebase/firestore";
 import { db } from "../firestore";
-import { IItem } from "../interfaces/Board";
+import { IItem, IItemResponse } from "../interfaces/Board";
 
-export async function getItems(): Promise<IItem[]> {
+export async function getItemsByColumn(
+	columnId: string
+): Promise<IItemResponse[]> {
+	try {
+		const q = query(collection(db, "items"), where("columnId", "==", columnId));
+		const itemsSnapshot = await getDocs(q);
+		const items: IItemResponse[] = [];
+		itemsSnapshot.forEach((doc) => {
+			items.push({ ...(doc.data() as IItem), id: doc.id });
+		});
+		return items;
+	} catch (err) {
+		console.error("Error getting Items By Column:", err);
+		throw err;
+	}
+}
+
+export async function getAllItems(): Promise<IItemResponse[]> {
 	try {
 		const itemsSnapshot = await getDocs(collection(db, "items"));
-        const items: IItem[] = []
-        itemsSnapshot.forEach((doc) => {
-            items.push({...doc.data() as IItem, id: doc.id})
-        })
-        return items;
+		const items: IItemResponse[] = [];
+		itemsSnapshot.forEach((doc) => {
+			items.push({ ...(doc.data() as IItem), id: doc.id });
+		});
+		return items;
 	} catch (err) {
 		console.error("Error getting Items:", err);
-        throw err;
+		throw err;
 	}
 }
 
@@ -32,7 +51,7 @@ export async function setItem(newItem: IItem) {
 	}
 }
 
-export async function updateItem(item: IItem) {
+export async function updateItem(item: IItemResponse) {
 	try {
 		const currentItemRef = doc(db, "items", item.id);
 		await updateDoc(currentItemRef, { ...item });
@@ -44,7 +63,7 @@ export async function updateItem(item: IItem) {
 export async function getItem(itemId: string) {
 	try {
 		const itemSnapshot = await getDoc(doc(db, "items", itemId));
-        return {...itemSnapshot.data(), id: itemSnapshot.id}
+		return { ...itemSnapshot.data(), id: itemSnapshot.id };
 	} catch (err) {
 		console.error("Error getting Item:", err);
 	}
